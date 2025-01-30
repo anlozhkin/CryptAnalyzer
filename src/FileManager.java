@@ -4,14 +4,19 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FileManager {
 
     public List<Character> readFileAsCharacters(Path path) {
         List<Character> characters = new ArrayList<>();
-        readFileAsStrings(path)
-                .forEach(str -> characters.addAll(str.chars().mapToObj(c -> (char) c).toList()));
+        try {
+            for (String str : Files.readAllLines(path)) {
+                characters.addAll(str.chars().mapToObj(c -> (char) c).toList());
+                characters.add('\n');
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return characters;
     }
 

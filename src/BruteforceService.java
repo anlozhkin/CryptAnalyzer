@@ -20,20 +20,29 @@ public class BruteforceService {
         if (encryptedStrings.isEmpty()) {
             throw new IllegalArgumentException("Файл с зашифрованными словами не может быть пустым");
         }
-        // Сначала проходимся по наиболее вероятным ключам
-        int possibleKey = fillKeysAndBruteforce(1, DUMMY_KEYS_COUNT);
-        if (checkPossibleKey(possibleKey)) {
-            return possibleKey;
+        // Брутфорсим по 100 ключей пока не упремся в максимальный Integer
+        int startPosition = 1;
+        int endPosition = DUMMY_KEYS_COUNT;
+
+        while (Integer.MAX_VALUE > endPosition) {
+            int possibleKey = fillKeysAndBruteforce(startPosition, endPosition);
+            if (checkPossibleKey(possibleKey)) {
+                return possibleKey;
+            }
+            startPosition = endPosition + 1;
+            endPosition = startPosition + DUMMY_KEYS_COUNT;
         }
-        // Если среди наиболее подходящих ключей не было совпадений, то проходимся по всему положительному Integer
-        possibleKey = fillKeysAndBruteforce(31, Integer.MAX_VALUE);
-        if (checkPossibleKey(possibleKey)) {
-            return possibleKey;
-        }
-        // Если среди всех положительных ключей не было совпадений, то проходимся по всему отрицательному Integer
-        possibleKey = fillKeysAndBruteforce(Integer.MIN_VALUE, -1);
-        if (checkPossibleKey(possibleKey)) {
-            return possibleKey;
+
+        // Брутфорсим по 100 ключей пока не упремся в минимальный Integer
+        startPosition = -1;
+        endPosition = -DUMMY_KEYS_COUNT;
+        while (Integer.MIN_VALUE < endPosition) {
+            int possibleKey = fillKeysAndBruteforce(startPosition, endPosition);
+            if (checkPossibleKey(possibleKey)) {
+                return possibleKey;
+            }
+            startPosition = endPosition - 1;
+            endPosition = startPosition - DUMMY_KEYS_COUNT;
         }
         return 0;
     }
@@ -59,7 +68,7 @@ public class BruteforceService {
                     countMatchingWords++;
                 }
             }
-            if (countMatchingWords >= decryptedWords.size() / 2) {
+            if (countMatchingWords >= decryptedWords.size() / 5) {
                 possibleKey = key;
                 break;
             }

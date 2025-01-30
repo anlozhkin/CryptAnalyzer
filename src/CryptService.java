@@ -55,7 +55,7 @@ public class CryptService {
         for (Character ch : srcList) {
             if (alphabet.contains(ch)) {
                 int indexInAlphabet = alphabet.indexOf(ch);
-                int shiftedIndexInAlphabet = (indexInAlphabet + key) % alphabet.size();
+                int shiftedIndexInAlphabet = Math.abs((indexInAlphabet + key) % alphabet.size());
                 dstList.add(alphabet.get(shiftedIndexInAlphabet));
             } else {
                 dstList.add(ch);
