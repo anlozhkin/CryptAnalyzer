@@ -17,7 +17,7 @@ public class Alphabets {
     private void initialize() {
         initializeAlphabet(rusAlphabet, 'а', RU_ALPHABET_SIZE);
         initializeAlphabet(engAlphabet, 'a', ENG_ALPHABET_SIZE);
-        symbols = List.of(' ', '.', ',', '-', ':', ';', '!');
+        symbols = List.of('.', ',', '-', ':', ';', '!');
         mergeLists();
     }
 
